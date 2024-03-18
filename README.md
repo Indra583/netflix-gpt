@@ -1,4 +1,12 @@
 # Nextfilx GPT
 
-1.Created a project using create-react-app package 
-2.Configured Tailwind CSS.
+Created a project using create-react-app package 
+Configured Tailwind CSS
+Header
+Login Form
+Routing
+Sign Up Form
+Form validation
+useRef hook
+Firebase setup
+Deploying our app to production
