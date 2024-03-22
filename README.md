@@ -10,3 +10,7 @@ Form validation
 useRef hook
 Firebase setup
 Deploying our app to production
+Redux toolkit integartion 
+SignIn, SignUp and SignOut
+UpdateProfile integration
+userIcon and signout 
