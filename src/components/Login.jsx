@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { BG_IMAGE, USER_AVATAR } from "../utils/constants";
 
 const Login = () => {
   const email = useRef(null);
@@ -42,12 +43,11 @@ const Login = () => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: name.current.value,
-            photoURL:
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSugux6VMujV1C7Lck5f0TI7O3F8PGVjyngw&s",
+            photoURL: USER_AVATAR
           })
             .then(() => {
               const { uid, email, displayName, photoURL } = user;
-              console.log(user, "uid ,email, displayName");
+              //console.log(user, "uid ,email, displayName");
               dispatch(
                 addUser({
                   uid: uid,
@@ -89,7 +89,7 @@ const Login = () => {
       <Header />
       <div className="absolute">
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/9d3533b2-0e2b-40b2-95e0-ecd7979cc88b/a3873901-5b7c-46eb-b9fa-12fea5197bd3/IN-en-20240311-popsignuptwoweeks-perspective_alpha_website_large.jpg"
+          src= { BG_IMAGE }
           alt="Login Background"
         />
       </div>
