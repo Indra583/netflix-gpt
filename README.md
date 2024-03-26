@@ -28,3 +28,6 @@
 -Secondary Container
 -Movie List & Movie Card
 -Custom Hooks for Popular , Top Rated and Upcoming movie
+-GPT Search Page
+-GPT Search Bar
+- Multi-language options
