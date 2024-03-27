@@ -31,3 +31,4 @@
 -GPT Search Page
 -GPT Search Bar
 - Multi-language options
+- Integrated Openai Api's for searching movies

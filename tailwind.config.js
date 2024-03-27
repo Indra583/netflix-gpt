@@ -6,5 +6,28 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [ 
+    function ({ addUtilities}){
+      const newUtilities = {
+        ".scrollbar-thin" : {
+          scrollbarWidth: "thin",
+          scrollbarColor: "red black"
+        },
+        ".scrollbar-webkit" : {
+          "&::-webkit-scrollbar":{
+            width: "2px"
+          },
+          "&::-webkit-track": {
+            background: "white"
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "red",
+            borderRadius: "10px",
+            border: "solid black"
+          }
+        }
+      }
+      addUtilities(newUtilities, [ 'responsive', 'hover'])
+    }
+  ],
 }
