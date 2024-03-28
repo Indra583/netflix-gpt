@@ -15,14 +15,14 @@ module.exports = {
         },
         ".scrollbar-webkit" : {
           "&::-webkit-scrollbar":{
-            width: "2px"
+            width: "8px"
           },
           "&::-webkit-track": {
             background: "white"
           },
           "&::-webkit-scrollbar-thumb": {
             background: "red",
-            borderRadius: "10px",
+            borderRadius: "8px",
             border: "solid black"
           }
         }

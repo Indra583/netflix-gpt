@@ -1,17 +1,19 @@
 import React from "react";
 import GptSearchBar from "./GptSearchBar";
 import GptMovieSuggestions from "./GptMovieSuggestions";
-import { ANIME_URL } from "../utils/constants";
+import {  KENPACHI_BG_URL } from "../utils/constants";
 
 const GptSearch = () => {
   return (
-    <div>
+    <>
       <div className="fixed -z-10">
-        <img src={ANIME_URL} alt="Login Background" />
+        <img className="h-screen w-screen object-cover" src={KENPACHI_BG_URL} alt="Login Background" />
       </div>
-      <GptSearchBar />
-      <GptMovieSuggestions />
-    </div>
+      <div>
+        <GptSearchBar />
+        <GptMovieSuggestions />
+      </div>
+    </>
   );
 };
 

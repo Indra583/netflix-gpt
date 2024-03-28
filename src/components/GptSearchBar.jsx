@@ -23,7 +23,7 @@ const GptSearchBar = () => {
   };
 
   const handleGptSearchButton = async () => {
-    console.log(searchText.current.value);
+    //console.log(searchText.current.value);
 
     // const gptQuery =
     //   "Act as a Movie and anime Recomandation System and suggest some good movies for the query :" +
@@ -56,9 +56,9 @@ const GptSearchBar = () => {
   };
 
   return (
-    <div className="pt-[10%] flex justify-center">
+    <div className=" pt-[45%] md:pt-[10%] flex justify-center">
       <form
-        className=" w-1/2 bg-black grid grid-cols-12"
+        className="w-full md:w-1/2 bg-black grid grid-cols-12"
         onSubmit={(e) => e.preventDefault()}
       >
         <input

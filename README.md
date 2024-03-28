@@ -30,5 +30,10 @@
 -Custom Hooks for Popular , Top Rated and Upcoming movie
 -GPT Search Page
 -GPT Search Bar
-- Multi-language options
-- Integrated Openai Api's for searching movies
+-Multi-language options
+-Integrated Openai Api's for searching movies
+-Fetched movie suggestions from TMDB api's to make movie recommandation
+-Reused MovieList component
+-Memiozation
+-Added .env file to save key
+-Made website responsive 
