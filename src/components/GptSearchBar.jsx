@@ -40,7 +40,7 @@ const GptSearchBar = () => {
     // if(!gptResults) return;
 
     const dummyGptResults =
-      "Bleach,OVERLORD,Naruto,One-Piece,Slime";
+      "Gintama,OVERLORD,Naruto,One-Piece,Bleach";
 
     const gptMovies = dummyGptResults.split(",");
 
