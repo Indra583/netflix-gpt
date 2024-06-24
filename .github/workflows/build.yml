@@ -1,0 +1,109 @@
+name: Deploy to Firebase
+
+on:
+  workflow_dispatch:
+    inputs:
+      example_input:
+        description: 'Generate build'
+        required: false
+        default: 'default value'
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '22.2.0'
+
+    - name: Install dependencies
+      run: |
+        npm install --legacy-peer-deps
+      shell: bash
+    
+    - name: Install Ruby and Bundler
+      run: |
+        # Load zshrc configurations
+        source ~/.zshrc
+        rbenv install -s 3.3.1  # Install Ruby version if not already installed
+        rbenv global 3.3.1
+        gem install bundler
+        echo 'export PATH="$HOME/.rbenv/shims:$PATH"' >> ~/.zshrc
+        source ~/.zshrc
+      shell: bash
+    
+    - name: Install CocoaPods and Fastlane dependencies
+      run: |
+        cd ios
+        
+        # Ensure the correct Ruby version and gem environment
+        source ~/.zshrc
+        
+        # Install dependencies specified in Gemfile
+        bundle install
+      shell: bash
+
+    - name: Build and Deploy Android
+      run: |
+        cd android
+        # Clean up old Gradle caches
+        ./gradlew --stop
+        ./gradlew clean
+        # Verify integrity of node_modules before build
+        ls -R ../node_modules
+        # Run fastlane to build and deploy
+        fastlane beta
+      env:
+        GRADLE_USER_HOME: ${{ runner.temp }}/.gradle  # Ensuring GRADLE_USER_HOME is set to a temporary directory to avoid potential and conflicts
+      shell: bash
+
+    - name: Build and Deploy iOS
+      run: |
+        cd ios
+    
+        # Ensure zshrc is loaded
+        source ~/.zshrc
+        
+        # Ensure correct Ruby and gem setup
+        rbenv install -s 3.3.1
+        rbenv global 3.3.1
+        
+        # Install Bundler if not already installed
+        gem install bundler || true
+        
+        # Check if CocoaPods is in the Gemfile, and install if necessary
+        if ! grep -q "gem 'cocoapods'" Gemfile; then
+          echo "gem 'cocoapods'" >> Gemfile
+        fi
+        
+        # Install gems specified in Gemfile
+        bundle install
+        
+        # Install CocoaPods dependencies
+        pod install --repo-update
+        
+        # Use Fastlane to build and deploy
+        fastlane beta
+      shell: bash
+      env:
+        GEM_HOME: ${{ runner.temp }}/.gem 
+
+    # - name: Commit and Push Changes to trigger-MA-898
+    #   # env:
+    #   #   GIT_COMMITTER_NAME: GitHub Actions
+    #   #   GIT_COMMITTER_EMAIL: actions@github.com
+    #   run: |
+    #       git add .
+    #       git commit -m "Auto increment version and build number"
+    #       git push origin trigger-MA-898
+    #   shell: bash
+      
+    - name: Clean up dependencies
+      run: |
+        rm -rf ios/vendor
+        rm -rf android/vendor
