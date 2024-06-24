@@ -1,0 +1,17 @@
+name: Deploy to Firebase
+
+on:
+  workflow_dispatch:
+    inputs:
+      example_input:
+        description: 'Generate build'
+        required: false
+        default: 'default value'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
