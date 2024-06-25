@@ -1,0 +1,81 @@
+name: Generate build
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_target:
+        description: 'Choose deploy target'
+        required: true
+        default: 'firebase'
+        type: choice
+        options:
+          - firebase
+          - app_store
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '22.2.0'
+
+    - name: Install dependencies
+      run: |
+        npm install --legacy-peer-deps
+      shell: bash
+    
+    - name: Install Ruby and Bundler
+      run: |
+        source ~/.zshrc
+        rbenv install -s 3.3.1
+        rbenv global 3.3.1
+        gem install bundler
+        echo 'export PATH="$HOME/.rbenv/shims:$PATH"' >> ~/.zshrc
+        source ~/.zshrc
+      shell: bash
+    
+    - name: Install CocoaPods and Fastlane dependencies
+      run: |
+        cd ios
+        source ~/.zshrc
+        bundle install
+      shell: bash
+
+    - name: Build and Deploy Android
+      run: |
+        cd android
+        ./gradlew --stop
+        ./gradlew clean
+        ls -R ../node_modules
+        fastlane beta deploy_target=${{ github.event.inputs.deploy_target }}
+      env:
+        GRADLE_USER_HOME: ${{ runner.temp }}/.gradle
+      shell: bash
+
+    - name: Build and Deploy iOS
+      run: |
+        cd ios
+        source ~/.zshrc
+        rbenv install -s 3.3.1
+        rbenv global 3.3.1
+        gem install bundler || true
+        if ! grep -q "gem 'cocoapods'" Gemfile; then
+          echo "gem 'cocoapods'" >> Gemfile
+        fi
+        bundle install
+        pod install --repo-update
+        fastlane beta deploy_target=${{ github.event.inputs.deploy_target }}
+      shell: bash
+      env:
+        GEM_HOME: ${{ runner.temp }}/.gem 
+
+    - name: Clean up dependencies
+      run: |
+        rm -rf ios/vendor
+        rm -rf android/vendor
